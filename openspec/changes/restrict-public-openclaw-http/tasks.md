@@ -1,0 +1,5 @@
+- [x] Verify published source credential patterns, loopback listeners, unauthenticated denial and foreign-origin refusal
+- [x] Implement an idempotent public API restriction with private backup, validation and rollback on failure
+- [x] Test preservation of dashboard proxy and refusal of changed site configuration
+- [x] Validate actual staged Caddy syntax and hand off the sudo command
+- [ ] Owner activates restriction; verify public denial and continued Career Ops/owner portal usability
