@@ -33,7 +33,17 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-brad/types/**/*.ts",
+    ".next-brad/dev/types/**/*.ts",
+    ".next-steve/types/**/*.ts",
+    ".next-steve/dev/types/**/*.ts",
+    ".next-direct/types/**/*.ts",
+    ".next-direct/dev/types/**/*.ts",
+    ".next-search-brad/types/**/*.ts",
+    ".next-search-brad/dev/types/**/*.ts",
+    ".next-search-steve/types/**/*.ts",
+    ".next-search-steve/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

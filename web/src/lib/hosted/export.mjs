@@ -1,0 +1,3 @@
+import {lock,StoreError} from './store.mjs';import {execFileSync} from 'node:child_process';import path from 'node:path';
+// The root helper uses the canonical nested-checkout guard; web owns only serialization.
+export function candidateExport(config){return lock(config.root,()=>{try{return JSON.parse(execFileSync(process.execPath,[path.join(config.code,'export-candidate.mjs'),config.candidate],{cwd:config.root,env:{PATH:process.env.PATH,CAREER_OPS_ROOT:config.root},encoding:'utf8',timeout:30000,maxBuffer:64000000,stdio:['ignore','pipe','pipe']}));}catch{throw new StoreError('Export could not be completed. Retry any unfinished job selection first.',409);}});}

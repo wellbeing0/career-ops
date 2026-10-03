@@ -1,0 +1,5 @@
+- [x] Implement existing opportunities and clear empty/coverage explanations
+- [x] Implement filter editor, validation, conflict protection, history and restore
+- [x] Verify exact source repairs using official employer links and public APIs
+- [x] Test both candidate paths, mobile navigation, saves and recovery
+- [x] Stage qualified release and hand off owner activation

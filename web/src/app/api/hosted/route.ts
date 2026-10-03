@@ -1,0 +1,9 @@
+import { hostedConfig } from '@/lib/hosted/policy.mjs';
+import { readState, save, updateTracker, history, prepareNarrative, StoreError } from '@/lib/hosted/store.mjs';
+import { candidateExport } from '@/lib/hosted/export.mjs';
+import { readApplications } from '@/lib/career-ops';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+function config(){const c=hostedConfig();if(!c)throw new StoreError('Hosted editing is disabled.',403);return c;}
+function error(e:unknown){return Response.json({error:e instanceof StoreError?e.message:'The workspace could not be read or saved. No template reset was attempted.'},{status:e instanceof StoreError?e.status:500});}
+export async function GET(req:Request){try{const c=config();const url=new URL(req.url);if(url.searchParams.get('export')==='1')return Response.json(candidateExport(c),{headers:{'Content-Disposition':`attachment; filename="${c.candidate}-career-ops-export.json"`,'Cache-Control':'private, no-store'}});if(url.searchParams.get('history')==='1')return Response.json(history(c,url.searchParams.get('id')));const state=readState(c);return Response.json({...state,applications:readApplications(),migration:state.migrationNeeded?prepareNarrative(state.profile,state.contents['modes/_profile.md']):null},{headers:{'Cache-Control':'private, no-store'}});}catch(e){return error(e);}}
+export async function POST(req:Request){try{const length=Number(req.headers.get('content-length')||0);if(length>450000)throw new StoreError('Request is too large.',413);const text=await req.text();if(Buffer.byteLength(text)>450000)throw new StoreError('Request is too large.',413);const body=JSON.parse(text);const c=config();if(!body||typeof body!=='object'||Array.isArray(body))throw new StoreError('Invalid request.');const result=body.action==='tracker'?updateTracker(c,body):save(c,body);return Response.json(result);}catch(e){return error(e);}}

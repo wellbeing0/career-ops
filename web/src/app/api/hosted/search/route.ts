@@ -1,0 +1,10 @@
+import {readFilters,saveFilters,filterHistory} from '@/lib/hosted/search-settings.mjs';
+import {hostedConfig} from '@/lib/hosted/policy.mjs';
+import {searchState,startSearch,cancelSearch,publishSelected} from '@/lib/hosted/search.mjs';
+import {StoreError} from '@/lib/hosted/store.mjs';
+import fs from 'node:fs';import path from 'node:path';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+function config(){const c=hostedConfig();if(!c)throw new StoreError('Hosted search is disabled.',403);return c;}
+function error(e:unknown){return Response.json({error:e instanceof StoreError?e.message:'Search could not be read or changed. Your saved results are retained.'},{status:e instanceof StoreError?e.status:500});}
+export async function GET(req:Request){try{const c=config(),params=new URL(req.url).searchParams;if(params.get('filters')==='1')return Response.json({settings:readFilters(c),history:filterHistory(c)},{headers:{'Cache-Control':'private, no-store'}});const state=searchState(c,params.get('id'));if(params.get('report')==='1'&&state.run){return new Response(fs.readFileSync(path.join(c.root,'data/search-reports',state.run.id+'.md'),'utf8'),{headers:{'Content-Type':'text/markdown; charset=utf-8','Content-Disposition':`attachment; filename="${c.candidate}-search-${state.run.id}.md"`,'Cache-Control':'private, no-store'}});}return Response.json(state,{headers:{'Cache-Control':'private, no-store'}});}catch(e){return error(e);}}
+export async function POST(req:Request){try{const text=await req.text();if(Buffer.byteLength(text)>20000)throw new StoreError('Request is too large.',413);const body=JSON.parse(text);const c=config();if(!body||typeof body!=='object'||Array.isArray(body))throw new StoreError('Invalid search request.');const result=body.action==='filters'?saveFilters(c,body):body.action==='start'?startSearch(c,body):body.action==='cancel'?cancelSearch(c,body.id):body.action==='select'?publishSelected(c,body):null;if(!result)throw new StoreError('Unknown search action.');return Response.json(result);}catch(e){return error(e);}}

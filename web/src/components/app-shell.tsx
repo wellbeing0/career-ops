@@ -21,6 +21,7 @@ import { NAV_ITEMS, isActivePath } from "@/lib/nav-items";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  if (process.env.NEXT_PUBLIC_HOSTED_MODE === "1") return <main className="min-h-screen bg-background text-foreground">{children}</main>;
   return (
     <JobsProvider>
       <PipelineProvider>

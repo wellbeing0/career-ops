@@ -92,6 +92,7 @@
  */
 
 import { readFileSync, existsSync, appendFileSync } from 'fs';
+import { createHash } from 'node:crypto';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { extractTrackerReportNumbers, resolveColumns, parseTrackerRow, normalizeTextKey } from './tracker-parse.mjs';
@@ -135,6 +136,7 @@ const USAGE = `Usage: node set-status.mjs <report#|company> <state> [--note "...
   --role "..."       Disambiguate when several rows share the company (fuzzy match)
   --on YYYY-MM-DD    Real event date for the status-log entry (defaults to today —
                      pass it when the transition happened earlier than it's recorded)
+  --expected-revision HASH  Refuse stale writes under the tracker lock
   --source NAME      Attribution for the transition ledger: set-status (default)
                      or web (a caller delegating to this script)
   --force            Allow a numeric selector despite a report-link mismatch, or despite a
@@ -189,8 +191,8 @@ function renderStatesSection() {
 
 const rawArgs = process.argv.slice(2);
 const positional = [];
-const flags = { note: null, replaceNote: null, role: null, on: null, row: null, report: null, source: null, force: false, dryRun: false, json: false };
-const VALUE_FLAGS = { '--note': 'note', '--replace-note': 'replaceNote', '--role': 'role', '--on': 'on', '--row': 'row', '--report': 'report', '--source': 'source' };
+const flags = { expectedRevision: null, note: null, replaceNote: null, role: null, on: null, row: null, report: null, source: null, force: false, dryRun: false, json: false };
+const VALUE_FLAGS = { '--expected-revision': 'expectedRevision', '--note': 'note', '--replace-note': 'replaceNote', '--role': 'role', '--on': 'on', '--row': 'row', '--report': 'report', '--source': 'source' };
 
 /**
  * Is the caller asking for help, rather than passing "--help" as a VALUE?
@@ -242,6 +244,7 @@ for (let i = 0; i < rawArgs.length; i++) {
     if ((a === '--row' || a === '--report') && !/^\d+$/.test(value)) {
       failUsage(`${a} expects a positive integer, got "${value}"`);
     }
+    if (a === '--expected-revision' && !/^[a-f0-9]{64}$/.test(value)) failUsage('--expected-revision expects a SHA-256 revision');
     if (a === '--source' && !WRITER_SOURCES.has(value)) {
       failUsage(`--source expects one of ${[...WRITER_SOURCES].join(', ')}, got "${value}"`);
     }
@@ -457,6 +460,9 @@ try {
   content = readFileSync(APPS_FILE, 'utf-8');
 } catch (err) {
   failWith(EXIT_NOT_FOUND, 'read-failure', `Cannot read tracker at ${APPS_FILE}: ${err.message}`);
+}
+if (flags.expectedRevision && createHash('sha256').update(content).digest('hex') !== flags.expectedRevision) {
+  failWith(EXIT_AMBIGUOUS, 'revision-conflict', 'Tracker changed since it was displayed; reload before updating.');
 }
 const lines = content.split('\n');
 const colmap = resolveColumns(lines);

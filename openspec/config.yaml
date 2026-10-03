@@ -1,0 +1,8 @@
+schema: spec-driven
+context: |
+  Write artifacts in English with OpenSpec structural headings and SHALL/MUST requirements.
+  Phase 1 is a static private viewing portal, separate from the alpha web application.
+  Candidate data stays in explicit external roots and never enters Git.
+  Preserve DATA_CONTRACT.md, canonical core-script writes and source-of-truth boundaries.
+  Credentials remain outside served content. Editing, workers and provider access require scoped authorization.
+  Follow approved implementation through verification; record staging and live acceptance separately.

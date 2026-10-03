@@ -1,0 +1,4 @@
+- [x] Implement Pipeline navigation and recovery/archive labels
+- [x] Record fixed-job user review with checkpoint and idempotency
+- [x] Verify both candidate paths, live-source refresh, phone layout and blocked routes
+- [x] Stage qualified release and owner activation/rollback command

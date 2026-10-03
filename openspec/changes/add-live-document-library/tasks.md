@@ -1,0 +1,5 @@
+- [x] Implement candidate-scoped live/archive catalog and read/download routes
+- [x] Implement mobile Documents navigation, previews and date/type/source filters
+- [x] Verify exclusions, same-origin/gateway requirements and candidate isolation
+- [x] Stage both qualified builds and owner activation/rollback with archive indexing
+- [x] Document browser/OpenClaw options and pending next-phase decisions without activation

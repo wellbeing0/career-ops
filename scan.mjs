@@ -3408,7 +3408,7 @@ async function main() {
   // Opt-in: merge enabled keyed/auth-gated provider plugins. Returns immediately
   // (no discovery, no dotenv, no process.env mutation) when config/plugins.yml is
   // absent — so a plain scan with no plugins configured stays byte-identical.
-  await mergeProviderPlugins(providers, { root: path.dirname(PROVIDERS_DIR) });
+  if (process.env.CAREER_OPS_HOSTED_SCAN !== '1') await mergeProviderPlugins(providers, { root: path.dirname(PROVIDERS_DIR) });
   if (providers.size === 0) {
     console.error('Error: no providers loaded from providers/');
     process.exit(1);
@@ -4129,6 +4129,11 @@ async function main() {
       errors: errors.map(({ company, error }) => ({ company, error })),
       unverified_zero: unverifiedZeroTargets,
       dry_run: dryRun,
+      ...(dryRun && process.env.CAREER_OPS_SCAN_PREVIEW_RECEIPT === '1' ? {
+        offers: verifiedOffers.slice(0, 250).map(({url, company, title, location, source, salary, postedAt}) => ({url, company, title, location, source, salary, postedAt})),
+        cap_hit: verifiedOffers.length > 250,
+        filter_counts: {title:totalFilteredTitle, tier:totalFilteredTier, location:totalFilteredLocation, salary:totalFilteredSalary, content:totalFilteredContent, blacklist:totalFilteredBlacklist, country:totalFilteredCountryEligibility, visa:totalFilteredVisa, cooldown:totalFilteredCooldown, date:totalFilteredPostedDate + totalFilteredPostingAge},
+      } : {}),
     }, errors.length > 0 ? 2 : 0);
   }
 
