@@ -13,3 +13,7 @@ sudo python3 /home/codex-deploy/apps/career-ops-editor/security/lock-openclaw-ht
 ```
 
 The helper saves the original site in a root-private /etc/career-ops backup, retains file ownership/mode, validates the full configuration and reloads Caddy. Validation/reload failure restores the previous site automatically. After activation, verify public /v1 API requests return 404, hosted Assistant still loads and answers, and the existing owner dashboard remains usable. No repository visibility change is needed for this runtime restriction.
+
+## Live activation verification — October 6, 2026, America/Detroit
+
+Steve supplied successful administrator activation output. Subsequent live checks returned 404 for public OpenClaw /v1, /v1/models and POST /v1/chat/completions. The owner portal root still returns 200. Both authenticated candidate Assistant endpoints return enabled=true with the configured OpenAI-first/OpenRouter-fallback status; unauthenticated requests return 401. Direct unauthenticated loopback /v1/models still returns 401, confirming local gateway reachability with authentication required. No AI model request was made during these checks. A fresh AI reply and interactive owner-dashboard use remain owner acceptance checks.

@@ -2,4 +2,5 @@
 - [x] Implement an idempotent public API restriction with private backup, validation and rollback on failure
 - [x] Test preservation of dashboard proxy and refusal of changed site configuration
 - [x] Validate actual staged Caddy syntax and hand off the sudo command
-- [ ] Owner activates restriction; verify public denial and continued Career Ops/owner portal usability
+- [x] Owner activates restriction; verify public denial, authenticated Career Ops availability and owner portal HTTP availability
+- [ ] Owner confirms a new Career Ops AI reply and normal owner-dashboard use after restriction
