@@ -1,0 +1,9 @@
+- [x] Inspect exact runtime, model/session precedence, restrictions, backup outcomes and maintenance error
+- [x] Implement preserving Brad-only configuration repair, private backup and startup rollback
+- [x] Update resolver mappings, installer qualification contract and native fixture version metadata
+- [x] Test fallback/security preservation, unknown-version refusal and existing-agent model preservation
+- [x] Validate staged repair against installed schema and native interface
+- [x] Apply authorized Brad model defaults, preserving all other configuration
+- [ ] Pause incompatible system-owned maintenance: blocked pending owner approval of global Skill Workshop mode change
+- [x] Verify real website chat/draft/save and fictional profile-save workflow with bounded provider use
+- [x] Record evidence and commit/push all scoped changes

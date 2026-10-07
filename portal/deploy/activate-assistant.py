@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Owner activation of qualified assistant code and bounded OpenClaw agents; reversible private journal."""
 import argparse,pathlib,os,json,hashlib,subprocess,pwd,re,time,urllib.request,urllib.error,importlib.util
-p=argparse.ArgumentParser();p.add_argument('--rollback',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--rollback',action='store_true');p.add_argument('--release',default='20261003-assistant-02');a=p.parse_args()
+if not re.fullmatch(r'[a-z0-9-]{1,80}',a.release):raise SystemExit('Invalid release identifier')
 if os.geteuid()!=0:raise SystemExit('Run with sudo')
 os.umask(0o077)
-release=pathlib.Path('/home/codex-deploy/apps/career-ops-editor/releases/20261003-assistant-02');journal=pathlib.Path('/etc/career-ops/assistant-activation-20261003-02.json');owner=pwd.getpwnam('steve');configfile=pathlib.Path('/home/steve/.openclaw/openclaw.json')
+release=pathlib.Path('/home/codex-deploy/apps/career-ops-editor/releases')/a.release;journal=pathlib.Path('/etc/career-ops')/('assistant-activation-'+a.release+'.json');
+if a.release=='20261003-assistant-02':journal=pathlib.Path('/etc/career-ops/assistant-activation-20261003-02.json')
+owner=pwd.getpwnam('steve');configfile=pathlib.Path('/home/steve/.openclaw/openclaw.json')
 def user_command(args):return ['runuser','-u','steve','--','env','HOME=/home/steve','XDG_RUNTIME_DIR=/run/user/'+str(owner.pw_uid),'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/'+str(owner.pw_uid)+'/bus',*args]
 def restart():
  subprocess.run(user_command(['systemctl','--user','restart','openclaw-gateway.service']),check=True)
@@ -24,7 +27,7 @@ for name,digest in q['source_sha256'].items():
 for c in ['brad','steve']:
  if (release/'web'/('.next-'+c)/'BUILD_ID').read_text().strip()!=q['build_ids'][c]:raise SystemExit('Qualified build changed')
 version=subprocess.check_output(user_command(['/home/steve/.npm-global/bin/openclaw','--version']),text=True).strip()
-if version!='OpenClaw 2026.9.3 (1391f7c)':raise SystemExit('OpenClaw version changed; qualify the installed version before activation')
+if version!=q.get('qualifiedOpenClawVersion','OpenClaw 2026.9.3 (1391f7c)'):raise SystemExit('OpenClaw version changed; qualify the installed version before activation')
 if journal.exists():
  old=json.loads(journal.read_text())
  if all(pathlib.Path(x['file']).read_text()==x['after'] for x in old['records']):print('Assistant release is already active.');raise SystemExit(0)

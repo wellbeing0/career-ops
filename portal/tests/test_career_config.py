@@ -12,3 +12,8 @@ class CareerConfigTests(unittest.TestCase):
  def test_unreviewed_fleet_or_primary_is_rejected(self):
   self.assertRaises(ValueError,module.career_config,{'agents':{'entries':{'other':{}}}},'/fictional')
   self.assertRaises(ValueError,module.career_config,{'agents':{'entries':{'main':{}},'defaults':{'model':{'primary':'openrouter/paid'}}}},'/fictional')
+
+ def test_existing_reviewed_agents_preserve_selected_models(self):
+  old={'agents':{'defaults':{'model':{'primary':'openai/fixture','fallbacks':['openrouter/fixture']}},'entries':{'main':{}}}}
+  initialized=module.career_config(old,'/fictional/career');initialized['agents']['entries']['career-brad']['model']['primary']='openai/gpt-6.1-sol';initialized['agents']['entries']['career-brad']['thinkingDefault']='medium'
+  new=module.career_config(initialized,'/fictional/career');self.assertEqual(new['agents']['entries'],initialized['agents']['entries'])

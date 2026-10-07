@@ -3,6 +3,8 @@
 import pathlib,argparse,json,os,subprocess,socket,time,threading,http.server,urllib.request,urllib.error,shutil,uuid
 p=argparse.ArgumentParser();p.add_argument('release',type=pathlib.Path);a=p.parse_args();r=a.release.resolve()
 fixture=json.loads(subprocess.check_output(['node',str(r/'portal/deploy/qualify-search.mjs'),str(r),'--keep'],text=True))['fixture'];scratch=pathlib.Path(fixture['temporaryRoot']);code=pathlib.Path(fixture['code']);shutil.copy2(r/'portal/assistant-worker.mjs',code/'portal/assistant-worker.mjs');captured=[];processes=[];ports={}
+for candidate in ['brad','steve']:
+ profile=pathlib.Path(fixture[candidate+'Root'])/'config/profile.yml';profile.write_text(profile.read_text()+'candidate:\n  full_name: Fictional Candidate\n')
 class Fake(http.server.BaseHTTPRequestHandler):
  def log_message(self,*args):pass
  def do_POST(self):
@@ -12,6 +14,7 @@ class Fake(http.server.BaseHTTPRequestHandler):
   if 'Slow reply' in message:time.sleep(3)
   if 'Force unrequested change' in message:text+='\n<career-action>{"type":"cv","content":"# Unrequested replacement"}</career-action>'
   elif 'operation for this turn: draft' in prompt:text='A draft is ready.\n<career-action>{"type":"draft","content":"# Fictional resume draft\\n\\nExperience drawn from the approved master CV."}</career-action>'
+  elif 'operation for this turn: profile' in prompt:text='A profile edit is ready.\n<career-action>{"type":"profile","fields":{"location":"Fictional Location"}}</career-action>'
   elif 'operation for this turn: cv' in prompt:text='A CV edit is ready.\n<career-action>{"type":"cv","content":"# Fictional updated CV\\n\\nSource-backed presentation revision."}</career-action>'
   self.send_response(200);self.send_header('Content-Type','text/event-stream');self.end_headers()
   try:
@@ -62,10 +65,11 @@ await page.getByRole('button',{name:'Save response',exact:true}).first().click()
 const download=await page.getByRole('link',{name:'Download response',exact:true}).first().getAttribute('href');assert.ok(download);const exported=await page.request.get('http://127.0.0.1:'+ports.brad+download);assert.equal(exported.status(),200);assert.match(await exported.text(),/Your approved primary CV/);
 await page.reload();await page.getByRole('link',{name:'Download response',exact:true}).first().waitFor();
 await page.getByRole('combobox',{name:'Assistant operation'}).selectOption('draft');await page.getByRole('textbox',{name:'Message to career assistant'}).fill('Draft my resume from existing experience.');await page.getByRole('button',{name:'Send to assistant'}).click();await page.getByText(/Draft saved: output\/assistant\//).waitFor();await page.reload();await page.getByRole('combobox',{name:'Career conversation'}).selectOption({index:1});await page.getByText(/Draft saved: output\/assistant\//).waitFor();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+await page.getByRole('combobox',{name:'Assistant operation'}).selectOption('profile');await page.getByRole('textbox',{name:'Message to career assistant'}).fill('Set my location to Fictional Location.');await page.getByRole('button',{name:'Send to assistant'}).click();await page.getByText('PROFILE saved with previous-version history.',{exact:false}).waitFor();
 await page.getByRole('combobox',{name:'Assistant operation'}).selectOption('chat');await page.getByRole('textbox',{name:'Message to career assistant'}).fill('Slow reply please');await page.getByRole('button',{name:'Send to assistant'}).click();await page.getByRole('button',{name:'Cancel reply'}).click();await page.getByText('Cancelled. Completed saves are retained.',{exact:true}).waitFor();
 await page.getByRole('button',{name:'Documents',exact:true}).click();await page.getByRole('textbox',{name:'Find documents'}).fill('output/assistant');await page.getByRole('button',{name:'View document',exact:true}).first().waitFor();
 await page.goto('http://127.0.0.1:'+ports.steve+'/steve/workspace?view=assistant');await page.getByRole('heading',{name:'Assistant',exact:true}).waitFor();assert.equal(await page.getByRole('combobox',{name:'Career conversation'}).locator('option').count(),1);assert.equal(errors.length,0);
-await browser.close();console.log(JSON.stringify({mobile:'390x844',chat:'passed',draftSave:'passed',responseSave:'passed',responseDownload:'passed',reload:'passed',cancel:'passed',documents:'passed',candidateIsolation:'passed',pageErrors:errors.length}));'''
+await browser.close();console.log(JSON.stringify({mobile:'390x844',chat:'passed',draftSave:'passed',responseSave:'passed',responseDownload:'passed',profileSave:'passed',reload:'passed',cancel:'passed',documents:'passed',candidateIsolation:'passed',pageErrors:errors.length}));'''
  browser=subprocess.run(['node','--input-type=module','-',str(r),json.dumps(ports)],input=script,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=120)
  if browser.returncode:raise RuntimeError(browser.stderr[-4000:])
  assert captured and all(not x.get('tools') for x in captured)
