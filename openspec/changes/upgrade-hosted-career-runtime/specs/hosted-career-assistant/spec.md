@@ -24,3 +24,7 @@ A maintenance task that requires denied career tools SHALL be paused with its or
 #### Scenario: Runtime forbids candidate-scoped pause
 - **WHEN** the installed runtime makes this a system-owned monitor editable only through global configuration
 - **THEN** the original definition is privately retained, tool denial remains unchanged and the global decision is reported as unresolved; other authorized repairs proceed
+
+#### Scenario: Owner approves global proposal mode
+- **WHEN** the owner approves changing global Skill Workshop autonomous mode to propose
+- **THEN** all system review monitors are disabled with their definitions retained, while other settings and schedules are preserved

@@ -6,3 +6,6 @@ Set Brad’s agent primary to openai/gpt-6.1-sol and thinkingDefault medium whil
 
 ## Impact
 Steve’s model, personal Telegram routing, shared login, authoritative candidate facts and public HTTP restrictions remain unchanged. Existing production release files are immutable. Real model trials use the existing approved provider chain and limited verification requests; fictional tests exercise profile changes without altering real candidate facts. No submissions or outreach occur.
+
+## Approved follow-up
+Steve approved the global Skill Workshop change on October 7. Set `skills.workshop.autonomous.mode` to `propose`, retaining all three system-owned review definitions while disabling their automatic schedules. Preserve approvalPolicy, agent settings, unrelated schedules and credentials. Use native schema validation, a private backup and live reconciliation checks.

@@ -4,6 +4,6 @@
 - [x] Test fallback/security preservation, unknown-version refusal and existing-agent model preservation
 - [x] Validate staged repair against installed schema and native interface
 - [x] Apply authorized Brad model defaults, preserving all other configuration
-- [ ] Pause incompatible system-owned maintenance: blocked pending owner approval of global Skill Workshop mode change
+- [x] Apply approved global Skill Workshop propose mode and verify retained, disabled monitors
 - [x] Verify real website chat/draft/save and fictional profile-save workflow with bounded provider use
 - [x] Record evidence and commit/push all scoped changes
