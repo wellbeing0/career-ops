@@ -17,3 +17,5 @@ The helper saves the original site in a root-private /etc/career-ops backup, ret
 ## Live activation verification — October 6, 2026, America/Detroit
 
 Steve supplied successful administrator activation output. Subsequent live checks returned 404 for public OpenClaw /v1, /v1/models and POST /v1/chat/completions. The owner portal root still returns 200. Both authenticated candidate Assistant endpoints return enabled=true with the configured OpenAI-first/OpenRouter-fallback status; unauthenticated requests return 401. Direct unauthenticated loopback /v1/models still returns 401, confirming local gateway reachability with authentication required. No AI model request was made during these checks. A fresh AI reply and interactive owner-dashboard use remain owner acceptance checks.
+
+Steve subsequently confirmed a new AI reply worked after lockdown. October 7 upgrade checks also confirmed public AI HTTP blocking remains active and the owner portal root remains reachable. Full interactive owner-dashboard acceptance is not inferred from HTTP availability.

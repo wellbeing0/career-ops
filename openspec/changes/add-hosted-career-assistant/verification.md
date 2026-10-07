@@ -51,3 +51,15 @@ sudo python3 /home/codex-deploy/apps/career-ops-editor/releases/20261003-assista
 ## Response-saving live acceptance
 
 Steve confirmed the Save response update worked on October 3, 2026. A subsequent read-only service check verified both candidate services active on assistant-responses-01. This establishes owner acceptance of response saving, while broader Brad usability and observed provider routing remain separate checks.
+
+## OpenClaw upgrade review — October 7, 2026
+
+Read-only inspection confirmed OpenClaw 2026.9.8 (fc23bc8), valid configuration and active gateway service. Public /v1/models and /v1/chat/completions remain blocked with 404; the owner portal root returns 200. Career gateway/editor listeners remain loopback-only. Both candidate profile, search, Documents and Assistant APIs respond successfully through authenticated ingress. Both backup timers are active and their latest backup service outcomes are success/exit 0.
+
+Isolated installed-runtime qualification passed gateway authentication, both career agent routes and zero native model tools using two local fictional model requests and no paid providers. The fixture’s original version label was static; the final run labeled the actual installed version correctly. This verifies transport and tool restrictions, not live GPT-6.1 response quality.
+
+The global primary is now openai/gpt-6.1-sol with thinkingDefault high. Both career agent entries still explicitly use openai/gpt-5.6-sol and the existing OpenRouter fallback, with no per-agent thinkingDefault. Brad’s OpenClaw main/console session has a gpt-6.1-sol/medium override; his website-bound sessions still report gpt-5.6-sol. Console session overrides do not set the default for new website conversations. Recommended next change: explicitly set career-brad primary to openai/gpt-6.1-sol and thinkingDefault medium, preserving fallback and restrictions; leave Steve’s selection unchanged unless requested. No configuration was changed during this review.
+
+Career tool denial, disabled semantic memory, zero scheduled heartbeat policy and empty skill/subagent allowlists remain configured. A separate enabled weekly skill-collection-review-career-brad cron job exists and its latest run failed; its error text was classified as tool-related without displaying the raw error. The heartbeat cron entry is disabled. Review the weekly maintenance job separately rather than relaxing career agent tool restrictions.
+
+The original AI activation helper intentionally pins OpenClaw 2026.9.3 and its referenced bundled secret resolver no longer exists in the upgraded installation. Running that original installer on the new version will refuse qualification; current running web workers use their existing private service credential and are operational. Refresh the installation/qualification path before further gateway reinstallation. No model changes, scheduler changes, live AI requests or credential reads for diagnostics were performed.
