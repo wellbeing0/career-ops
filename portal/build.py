@@ -101,7 +101,6 @@ def build(candidates,dest):
  chosen={s:selected(p) for s,p in roots.items()};dest.mkdir(parents=True)
  site=dest/'site';(site/'assets').mkdir(parents=True);(site/'assets/portal.css').write_text(CSS+'\n.edit-link{display:inline-block;background:#174b70;color:#fff;padding:14px 18px;border-radius:10px;font-weight:700;text-decoration:none;min-height:44px;box-sizing:border-box}\n')
  now=stamp(datetime.datetime.now().timestamp());manifest={'snapshot_at':now,'files':[],'candidates':{}}
- home='<h1>Career Ops</h1><p>Profiles, job opportunities and application documents for Steve and Brad.</p><div class="notice">Document library. Use the edit buttons to update your live workspace. Job-search drafts require review before use. Historical search results are preserved with their dates; a saved posting is not proof that the job is still open.</div><p class="muted">Snapshot published '+esc(now)+'</p><div class="cards">'
  for slug,root in roots.items():
   files,omitted=chosen[slug];known={f.relative_to(root).as_posix() for f in files};items={};name=slug.title();manifest['candidates'][slug]={'document_count':len(files),'omitted':omitted}
   for f in files:
@@ -127,9 +126,10 @@ def build(candidates,dest):
   for i,g in enumerate(order):
    if g in items:catalog+='<section class="card" id="section-'+str(i)+'"><h2>'+g+'</h2><ul class="files">'+''.join(items[g])+'</ul></section>'
   (site/slug/'index.html').write_text(page(name+' career workspace',catalog))
-  home+='<article class="card"><h2>'+name+'</h2><p>'+str(len(files))+' documents: profile, CVs, job results, evaluations and supporting notes.</p><a class="edit-link" href="/'+slug+'/workspace">Edit '+name+'’s profile, CV and tracker</a><p><a href="/'+slug+'/workspace?view=documents">View '+name+'’s documents</a></p></article>'
- home+='</div><section class="card"><h2>What happens next?</h2><p>Review the documents together and choose which opportunities to pursue. Use the workspace for live searches, profiles, CVs and documents. Dated archive copies remain available from Documents. AI assistance is planned for the next phase.</p></section>'
- (site/'index.html').write_text(page('Career Ops private workspace',home))
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('career_home',pathlib.Path(__file__).with_name('home.py'));landing=importlib.util.module_from_spec(spec);spec.loader.exec_module(landing)
+ (site/'assets/home.css').write_text(landing.CSS)
+ (site/'index.html').write_text(landing.start_page())
  for f in sorted(site.rglob('*')):
   if f.is_file():manifest['files'].append({'path':f.relative_to(dest).as_posix(),'sha256':sha(f),'size':f.stat().st_size})
  (dest/'manifest.json').write_text(json.dumps(manifest,indent=2))
