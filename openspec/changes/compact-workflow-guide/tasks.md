@@ -4,4 +4,4 @@
 - [x] Refresh all Assistant context guides.
 - [x] Rebuild both workspaces and qualify phone/desktop navigation and archive preservation.
 - [x] Commit/push and hand off reversible activation.
-- [ ] Verify live publication after owner activation.
+- [x] Verify live publication after owner activation.

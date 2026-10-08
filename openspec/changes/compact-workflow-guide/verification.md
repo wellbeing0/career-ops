@@ -13,3 +13,7 @@ sudo python3 /home/codex-deploy/apps/career-ops-editor/releases/20261008-compact
 ```
 
 The same helper with `--rollback` restores the previous code and static release.
+
+## Live acceptance
+
+Owner activation completed. Authenticated browser checks passed for both live workspace Job-search guide links: each opens the compact root guide, with both buttons and the first two workflow cards visible at 390×700. Both services run the new release. The obsolete static indexes are absent; all 46 Brad and 42 Steve archived original files remain resolvable from their live-library entries. Assistant guide hashes match the activated manifest, both backup timers are active, and unauthenticated index access returns HTTP 401. The initial raw-HTML workspace assertion was unsuitable for the client-rendered header; the rendered browser check verified the actual link successfully. No model call or candidate content change was needed.
