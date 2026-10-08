@@ -103,3 +103,5 @@ Every deployment must review and update the four public OpenClaw context documen
 ### Workflow start page
 
 `portal/home.py` supplies the authenticated site index: workspace choices, return-visit shortcuts, six concise workflow steps and feature explanations. The snapshot builder uses the same page; the landing page shows no archive counts or candidate facts. `stage-start-page.py` copies the existing static release and changes only the index plus its dedicated CSS, verifying every other served file unchanged. `activate-start-page.py` switches the static page and matching Assistant-guide release together, with prior service/env/static pointers retained for rollback. Unchanged web build artifacts may be reused only after verifying their runtime source files against the previously qualified release.
+
+The compact guide revision replaces workspace cards with two top buttons and removes obsolete candidate static indexes; individual archive files/views stay available in live Documents. Activate with the qualified `activate-compact-guide.py` helper to update both rebuilt workspace links and Assistant guides together.
