@@ -87,3 +87,7 @@ python3 portal/deploy/package-editor.py /absolute/staging/directory --release UN
 ```
 
 The package includes a knowledge manifest with the exact source commit, release ID and document hashes. Qualification and activation must verify it alongside source/build hashes. Copy guides with the code release, and roll them back with that release; do not independently pull GitHub main into the live assistant. Missing guides are identified as unavailable rather than represented as current project knowledge. Local development without a manifest is explicitly labeled as development.
+
+### Hosted capability review and guided workflow increment
+
+See [repository-to-website review](../docs/hosted-capability-review.md) for what is exposed, what is missing and why some CLI workflows should remain owner-only. The `complete-hosted-job-workflow` OpenSpec implements the first guided document increment: selected-job evaluation, Markdown application packets, and interview plan/practice/debrief with saved review artifacts. Canonical evaluation-to-tracker registration, PDF/ATS export and independent research remain follow-on work.

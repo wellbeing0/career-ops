@@ -1,0 +1,50 @@
+# Career Ops repository versus hosted website
+
+Reviewed 2026-10-07 against local fork 1.35.0 and live release `20261007-experience-context-01`. This is a source-based capability review, not a claim that every upstream mode was executed. The upstream update check was offline; this review does not establish parity with unpublished or later upstream releases.
+
+## Finding
+
+The hosted site exposes the everyday foundation, but not most of the repository's distinct workflows. Counting pages would be misleading: Search covers discovery, while the steps that turn a saved opportunity into an evaluated role, application packet and prepared interview are largely absent. Generic AI discussion and Markdown drafts are useful, but are not the dedicated Career Ops workflows.
+
+There are three layers: the CLI/mode catalog, the upstream local web app, and our candidate-isolated hosted app. Upstream web code already includes evaluation workers, PDFs, follow-ups and browser application support. Our hosted policy deliberately blocks those routes; simply adding navigation links cannot make them usable on the VPS. Those workers assume local CLI/browser access and broader file permissions. Reuse their mode instructions and deterministic helpers through candidate-bound operations instead of opening the entire local dashboard.
+
+## Capability matrix at review time
+
+| Capability | Repository evidence | Hosted exposure | Decision and reason |
+|---|---|---|---|
+| Profile and master CV editing | `modes/interview.md`, `web/src/app/api/profile`, `cv` | Structured fields, narrative, master CV, AI edits, revision checks and recovery | Keep; sufficient daily foundation. |
+| Document intake and verified career profile | `modes/intake.md`, `modes/master-profile.md`, `career-profile.mjs` | Existing documents viewable; no upload/review import workflow | Later: useful for accomplishments, but requires source annotation and explicit fact confirmation. The upstream master-profile schema itself does not yet drive tailored PDFs. |
+| Free job discovery | `scan.mjs`, `providers/`, `modes/scan.md` | Greenhouse/Ashby/Lever boards, filters, saved searches, preliminary title fit and dedup | Keep and repair sources. Current ranking is not a full fit score. |
+| Broader discovery | `modes/discover.md`, `scan-ats-full.mjs`, Workday/iCIMS providers, Dayforce/Interamt browser scanners | Broad web queries and these scanners are not run | Add manual JD intake now; consider additional providers only where they add relevant coverage. Do not build every geographically specialized scanner. |
+| Search source maintenance | `audit-portals.mjs`, `verify-portals.mjs`, `/api/portals/verify` | Coverage errors visible; filters editable; company/source editing requires owner operation | Add source management later; separate provider failure, manual coverage and valid empty results. Never substitute a parent board for a business unit without a scope filter. |
+| Full job evaluation and comparison | `modes/oferta.md`, `modes/ofertas.md`, `_shared.md`, upstream `/api/run` | No dedicated evaluation; generic chat can compare supplied references | Highest priority: guided evaluation with the full JD, source-backed fit, compensation/work-model unknowns and separate legitimacy confidence. Preserve JD and report. |
+| Posting capture and liveness | `fetch-jd.mjs`, `archive-posting.mjs`, `check-liveness.mjs`, `check-jd-archive.mjs` | Original posting link and unverified availability label | Add alongside evaluation; distinguish user-provided JD/current owner check from independently retrieved liveness. Do not label generic page text as a verified active job. |
+| Saved opportunities and application lifecycle | `pipeline.md`, `set-status.mjs`, `merge-tracker.mjs`, `outcome.mjs` | Pipeline and manual tracker status/notes; saving a search match is not applying | Keep manual control. Future evaluated-job registration should use canonical numbering and tracker helpers, not a second tracker. |
+| Tailored application packet | `modes/text.md`, `pdf.md`, `cover.md`, `email.md`, `apply.md` | Generic saved Markdown draft; existing samples/downloads | High priority: selected-job resume, cover letter and form/email drafts; downloadable PDF and ATS checks as explicit follow-on acceptance work. Never overwrite the master CV when tailoring. |
+| CV quality checks | `verify-cv-facts.mjs`, `verify-ats.mjs`, `keyword-match.mjs`, `cv-title-check.mjs` | Numeric guard on CV/draft saves; no complete tailored-CV checks | Add with application export. ATS scores are advisory; missing keywords never authorize invented experience. |
+| Company/interviewer research | `modes/deep.md`, `interview-prep.md`, `interview-redflag.md` | Project guides and selected job documents; no general research tools | Add bounded public research later, with citations and explicit sparse-intel handling. Current agent tools remain denied. |
+| Interview preparation | `modes/interview-prep.md`, `modes/interview/plan.md` | Historical prep documents visible; generic AI can discuss interviews | High priority: visible Interview prep entry, selected role/round/date, gaps, pitch, questions and time-blocked prep. Viewing an archived prep file is not generating a new plan. |
+| Practice and debrief | `modes/interview/practice.md`, `debrief.md`, question/story banks, `weekly-digest.mjs` | Conversation possible; no dedicated practice/debrief flow | Add guided practice and saved debrief. Load retracted-claims guard and provenance rules. Keep unconfirmed figures narrative-only; do not silently promote an AI story into CV fact. |
+| Follow-ups and employer replies | `modes/followup.md`, `reply-watch.md`, `paste-reply.mjs`, upstream follow-up routes | Manual application notes only | Next increment: due list, copyable follow-up drafts and pasted-reply classification. Gmail integration can wait; no automatic sending. |
+| Contacts and warm introductions | `contacts.mjs`, `linkedin-join.mjs`, `modes/contacto.md` | Generic outreach drafts only | Defer phonebook/LinkedIn import until requested; adds third-party personal data and consent/retention work. |
+| Pipeline analytics and learning | `stats.mjs`, `funnel-velocity.mjs`, `patterns`, `calibrate`, repost/friction/latency scripts | Search counters only | Add compact counts and due actions later; meaningful conversion/score calibration needs actual outcome history, not synthetic probabilities. |
+| Skills development and adjacent roles | `titles`, `upskill`, `training`, `project`, `jd-skill-gap.mjs` | Generic discussion only | Later: helpful when recurring gaps emerge. Prioritize applications/interviews over a separate training dashboard. |
+| Offer comparison and negotiation | `ofertas`, `offer-prep`, `salary-gap.mjs`, `negotiation-roi.mjs` | Generic discussion only | Defer until an offer exists. Contract mode must retain its attending-human, no outbound research and no legal-verdict constraints. |
+| Browser form assistance | `modes/apply.md`, upstream `/api/apply/*` | Not exposed | Keep disabled for now: employer-specific browser sessions and sensitive form fields add significant complexity. Copyable answers provide much of the value. Never auto-submit. |
+| Batch workers, maintenance and regional variants | `modes/batch.md`, updates, multilingual/regional modes | Not exposed | Keep owner/admin operations separate. English/US workflows cover present users; no need to expose every CLI command or automated shell task. |
+
+## Recommended product shape
+
+For each saved job, show **Evaluate job → Prepare application → Prepare for interview**. Also show Interview prep in the main navigation, so a candidate with an externally found interview can start directly. Each action should show which job/context it uses, what will be saved, what is missing, progress/cancellation, and a link to the result in Documents. No need for a giant mode picker.
+
+Start with a guided document increment using the existing bounded Assistant and reviewed public mode instructions. A full job description is required; search summaries alone cannot establish fit. Save immutable review artifacts immediately. Interview plan/practice/debrief get separate choices; dates/rounds are explicit. Keep CV tailoring separate from master-CV edits. Unsupported research, canonical evaluation-to-tracker integration, PDF/ATS export and automatic question-bank reconciliation must be labeled as future work, not implied by chat support.
+
+Then add canonical evaluated-job registration and application export/quality checks, followed by follow-up actions and useful pipeline analytics. Research/provider expansion should follow observed gaps. Do not enable unrestricted OpenClaw tools or the upstream local worker API as a shortcut.
+
+## Acceptance before calling a capability exposed
+
+A candidate can discover the action without prompt knowledge, select the correct job, supply missing context, complete it on a phone, recover after interruption, find/download the saved artifact, and understand its review status. Both candidate roots remain isolated. Primary facts are never silently changed; unverified stories and external job text remain distinct. Production acceptance follows owner activation and real candidate-bound tests; fictional mock tests and builds prove only staged implementation.
+
+## Source inspection
+
+Hosted boundary: `web/src/lib/hosted/policy.mjs`; navigation: `web/src/components/hosted-workspace.tsx`; assistant operations/context/action guards: `web/src/lib/hosted/assistant.mjs`, `assistant-runner.mjs`; search: `search.mjs`, `search-settings.mjs`; pipeline: `hosted-pipeline.tsx`; library: `documents-catalog.mjs`. Repository inventory: `modes/README.md`, `modes/interview/README.md` and the files in the matrix. Upstream local worker assumptions: `web/src/app/api/run/route.ts`, `web/src/app/api/apply/drive/route.ts`.
