@@ -6,4 +6,4 @@
 - [x] Build both candidate releases and qualify fictional browser/PDF flows.
 - [x] Update public Assistant guides and deployment handoff; commit and push.
 - [x] Stage sealed release and provide owner activation command.
-- [ ] Verify live behavior after owner activation.
+- [x] Verify live behavior after owner activation.
