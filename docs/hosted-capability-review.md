@@ -48,3 +48,9 @@ A candidate can discover the action without prompt knowledge, select the correct
 ## Source inspection
 
 Hosted boundary: `web/src/lib/hosted/policy.mjs`; navigation: `web/src/components/hosted-workspace.tsx`; assistant operations/context/action guards: `web/src/lib/hosted/assistant.mjs`, `assistant-runner.mjs`; search: `search.mjs`, `search-settings.mjs`; pipeline: `hosted-pipeline.tsx`; library: `documents-catalog.mjs`. Repository inventory: `modes/README.md`, `modes/interview/README.md` and the files in the matrix. Upstream local worker assumptions: `web/src/app/api/run/route.ts`, `web/src/app/api/apply/drive/route.ts`.
+
+## Approved first increment — staged, not yet live
+
+Steve approved proceeding on 2026-10-07. The `20261008-guided-workflows-01` release now adds per-opportunity evaluation/application/interview actions, an Interview prep navigation entry, full-JD forms, reviewed mode procedures, and immutable evaluation/interview review documents. Application packets remain guarded Markdown drafts. Seven real OpenClaw calls with fictional data and phone-sized production-browser tests qualified this increment; owner sudo activation is still required.
+
+The matrix above preserves the original gap assessment. This increment closes discoverability and guided document preparation, but does not claim complete CLI parity. Next priorities are canonical evaluation-to-tracker registration, PDF export with ATS/fact/title checks, and follow-up due actions. Role-specific interview document selection and human-reviewed question-bank updates can improve continuity beyond the currently supplied story/question/retracted-claim context and conversation history. Independent research, browser form automation, inbox integrations, bulk workers and offer-stage tools remain deliberately deferred for the reasons in the matrix.

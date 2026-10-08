@@ -7,6 +7,6 @@
 - [x] Implement bounded guided workflow context, saves and interruption recovery.
 - [x] Expose per-job actions and Interview prep navigation with mobile interaction feedback.
 - [x] Package public procedures and update Assistant handoff guides.
-- [ ] Run unit/security tests, production builds and fictional browser qualification.
-- [ ] Stage qualified deployment and provide concrete owner activation command.
+- [x] Run unit/security tests, production builds and fictional browser qualification.
+- [x] Stage qualified deployment and provide concrete owner activation command.
 - [ ] Verify live source changes and guided workflows after owner activation.
