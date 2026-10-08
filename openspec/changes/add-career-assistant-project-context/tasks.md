@@ -2,4 +2,4 @@
 - [x] Implement the approved change and maintain source/privacy boundaries
 - [x] Complete automated and browser qualification with fictional candidates
 - [x] Package exact committed code/docs and stage reversible activation
-- [ ] Verify live activation and record acceptance evidence
+- [x] Verify live activation and record acceptance evidence
