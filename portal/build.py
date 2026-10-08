@@ -118,14 +118,6 @@ def build(candidates,dest):
    else:content=prefix+'<div class="card"><p>This document is available in its original format.</p><a href="'+original+'">Open '+esc(f.suffix.upper())+' document</a></div>'
    view.write_text(page(name+' · '+title,content))
    items.setdefault(group(rel),[]).append('<li><a href="/'+slug+'/view/'+quote(key,safe='/')+'.html">'+esc(title)+'</a><span class="muted">'+esc(key+' · '+f.suffix.upper().lstrip('.')+' · '+changed)+'</span></li>')
-  catalog='<p><a class="edit-link" href="/'+slug+'/workspace?view=documents">View current documents and searches</a></p><h1>'+name+'’s archived document library</h1><p><a class="edit-link" href="/'+slug+'/workspace">Edit profile, CV and tracker</a></p><p class="muted">'+str(len(files))+' documents · snapshot '+esc(now)+'</p><div class="notice">Shared login: both visitors can view both workspaces, including pertinent private job-search notes.</div>'
-  if slug=='brad':
-   catalog+='<div class="card"><h2>Start here</h2><p><a href="/brad/view/output/survey-2026-10-02/opportunity-survey.md.html">Ranked opportunity survey</a> · <a href="/brad/files/output/samples-2026-10-02/index.html">Owner and Ashby sample packets</a> · <a href="/brad/view/cv.md.html">Master CV</a></p></div>'
-  order=['Profile and master CV','Sample applications and resumes','Search results and pipeline','Job evaluations','Resume documents and supporting sources','Interview preparation','Tracker and job-search notes']
-  catalog+='<nav>'+''.join('<a href="#section-'+str(i)+'">'+esc(g)+'</a>' for i,g in enumerate(order) if g in items)+'</nav>'
-  for i,g in enumerate(order):
-   if g in items:catalog+='<section class="card" id="section-'+str(i)+'"><h2>'+g+'</h2><ul class="files">'+''.join(items[g])+'</ul></section>'
-  (site/slug/'index.html').write_text(page(name+' career workspace',catalog))
  import importlib.util
  spec=importlib.util.spec_from_file_location('career_home',pathlib.Path(__file__).with_name('home.py'));landing=importlib.util.module_from_spec(spec);spec.loader.exec_module(landing)
  (site/'assets/home.css').write_text(landing.CSS)
