@@ -9,4 +9,4 @@
 - [x] Package public procedures and update Assistant handoff guides.
 - [x] Run unit/security tests, production builds and fictional browser qualification.
 - [x] Stage qualified deployment and provide concrete owner activation command.
-- [ ] Verify live source changes and guided workflows after owner activation.
+- [x] Verify live source changes and guided workflows after owner activation.

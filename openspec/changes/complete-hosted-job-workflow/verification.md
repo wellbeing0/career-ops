@@ -25,7 +25,7 @@ The actual hosted scanner fetched W&B's observed dedicated feed using fictional 
 
 Existing live candidate services and backup timers remained active. Public OpenClaw `/v1/chat/completions` and `/v1/models` still returned 404. No Caddy or shared-login changes were made.
 
-## Owner activation pending
+## Owner activation handoff (completed)
 
 ```sh
 sudo python3 /home/codex-deploy/apps/career-ops-editor/releases/20261008-guided-workflows-01/portal/deploy/activate-guided-workflows.py
@@ -33,4 +33,12 @@ sudo python3 /home/codex-deploy/apps/career-ops-editor/releases/20261008-guided-
 
 The root helper validates the staged seal/builds, preflights both source documents, preserves private env/unit rollback records, activates candidate-specific code and backup helper references, and applies exact source repairs as each candidate owner with filter-history checkpoints. Its retry reconciles pending source repairs if code is already active. Existing candidate files, login, historical receipts and backup timers remain.
 
-After activation, verify both hosted workspaces and run fresh searches; old searches deliberately retain original source diagnostics. Production candidate acceptance is still pending this owner command. The staged model trials and browser fixtures do not establish that the new UI is live.
+The owner ran this command successfully. The live acceptance evidence below establishes deployed navigation and forms; earlier fictional model trials establish the guided generation/save behavior. Fresh candidate searches remain a user action; old searches deliberately retain original source diagnostics.
+
+## Live acceptance after owner activation — 2026-10-08
+
+Both candidate services are active with WorkingDirectory pointing to `20261008-guided-workflows-01/web`. Both backup timers remain active. Authenticated live document catalogs load. Reviewed source fields now match the scoped repair: Brad HubSpot and Steve Hightouch retain official manual links with unsupported feeds removed; Steve W&B uses the verified dedicated `weights_and_biases` Greenhouse feed. Candidate targeting and historical search receipts were preserved by the activation helper.
+
+Read-only authenticated Chromium checks at 390×844 passed for both real workspaces: Interview prep navigation, all three guided task forms, plan/practice/debrief choices, disabled submission until the full JD and message are present, Pipeline action links, selected-job handoff into preparation, dark theme, no horizontal overflow, pointer cursor and minimum 44px action height. Zero browser page errors, zero model calls and zero candidate file writes in this live browser check. Saved-opportunity selection was checked after its asynchronous list finished loading. No real candidate application packet was created merely for verification.
+
+Public OpenClaw `/v1/chat/completions` and `/v1/models` still return 404. Shared authentication remains in place. Earlier staged qualification (seven actual model calls using fictional sources) remains the evidence for generated document saves and candidate-fact guards; the live checks establish deployment and discoverability, not completion of a candidate's application.
