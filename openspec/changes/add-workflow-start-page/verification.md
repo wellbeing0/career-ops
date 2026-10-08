@@ -8,10 +8,10 @@ Headless browser checks passed at 390×844 and 1280×900: six steps, eight featu
 
 The staged release `20261008-start-page-01` is sealed with source hashes, both build IDs, the static manifest hash and the browser qualification receipt. Activation swaps the static page and matching Assistant context together, with rollback records for the prior portal pointer and service definitions. No candidate data, login, model or Caddy changes are included.
 
-Owner activation remains pending:
+Owner activation completed successfully using:
 
 ```bash
 sudo python3 /home/codex-deploy/apps/career-ops-editor/releases/20261008-start-page-01/portal/deploy/activate-start-page.py
 ```
 
-Live index and Assistant-context acceptance follow activation. Staging and browser qualification do not establish live deployment.
+Live acceptance after owner activation passed: the authenticated public index serves the new workflow page; Brad and Steve workspace, Pipeline and Assistant links return HTTP 200; unauthenticated index returns HTTP 401. Both services use the new release and are active, both backup timers remain active, and the four Assistant guide hashes match the activated release manifest. This acceptance verifies deployed context files and the existing per-turn loading path; no additional model trial was run for this navigation-only deployment.

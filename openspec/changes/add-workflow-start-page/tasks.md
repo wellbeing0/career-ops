@@ -4,4 +4,4 @@
 - [x] Stage reversible static/context deployment with archive preservation checks.
 - [x] Verify phone/desktop layout, links, themes, keyboard and pressed feedback.
 - [x] Commit/push and provide owner activation handoff.
-- [ ] Verify live index and Assistant context after activation.
+- [x] Verify live index and Assistant context after activation.
