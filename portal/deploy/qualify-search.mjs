@@ -4,7 +4,7 @@ const source=path.resolve(process.argv[2]||path.join(import.meta.dirname,'../..'
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'career-search-qualification-')),code=path.join(tmp,'code');
 fs.mkdirSync(code);for(const name of fs.readdirSync(source).filter(n=>n.endsWith('.mjs')))fs.copyFileSync(path.join(source,name),path.join(code,name));
 for(const name of ['lib','providers','plugins','templates'])fs.cpSync(path.join(source,name),path.join(code,name),{recursive:true});
-fs.mkdirSync(path.join(code,'portal'));fs.copyFileSync(path.join(source,'portal/search-worker.mjs'),path.join(code,'portal/search-worker.mjs'));
+fs.mkdirSync(path.join(code,'portal'));if(fs.existsSync(path.join(source,'portal/knowledge')))fs.cpSync(path.join(source,'portal/knowledge'),path.join(code,'portal/knowledge'),{recursive:true});fs.copyFileSync(path.join(source,'portal/search-worker.mjs'),path.join(code,'portal/search-worker.mjs'));
 fs.mkdirSync(path.join(code,'web/src/lib'),{recursive:true});for(const name of ['hosted','title-fit.mjs','profile-keywords.mjs'])fs.cpSync(path.join(source,'web/src/lib',name),path.join(code,'web/src/lib',name),{recursive:true});
 fs.symlinkSync(path.join(source,'node_modules'),path.join(code,'node_modules'));fs.symlinkSync(path.join(source,'web/node_modules'),path.join(code,'web/node_modules'));fs.copyFileSync(path.join(source,'tracker-aliases.json'),path.join(code,'tracker-aliases.json'));
 const provider=path.join(code,'providers/greenhouse.mjs');fs.renameSync(provider,path.join(code,'providers/_original-greenhouse.mjs'));

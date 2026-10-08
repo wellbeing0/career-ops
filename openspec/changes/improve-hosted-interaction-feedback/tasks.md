@@ -1,0 +1,5 @@
+- [x] Inspect existing frontend and assistant context boundary
+- [x] Implement the approved change and maintain source/privacy boundaries
+- [ ] Complete automated and browser qualification with fictional candidates
+- [ ] Package exact committed code/docs and stage reversible activation
+- [ ] Verify live activation and record acceptance evidence

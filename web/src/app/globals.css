@@ -319,3 +319,14 @@ html.dark .co-cost[data-tone="free"]{color:hsl(158 64% 60%);background:hsl(158 6
 .co-cost[data-tone="spend"]{color:hsl(35 9% 34%);background:hsl(35 8% 46% / .12);border-color:hsl(35 8% 46% / .26)}
 html.dark .co-cost[data-tone="spend"]{color:hsl(35 8% 70%);background:hsl(35 6% 60% / .12);border-color:hsl(35 6% 60% / .24)}
 .co-cost svg{width:.85em;height:.85em}
+
+/* Shared interaction feedback for hosted controls, including touch and keyboard. */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]), summary { cursor: pointer; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+.hosted-workspace .career-control { min-height:44px; display:inline-flex; align-items:center; justify-content:center; transition:background-color .12s, border-color .12s, box-shadow .12s; }
+.hosted-workspace .career-control:not(:disabled):hover { background:var(--surface-hover); }
+.hosted-workspace .career-control:not(:disabled):active { background:var(--surface-hover); box-shadow:inset 0 0 0 2px var(--fg); }
+.hosted-workspace .career-control:is([aria-current="page"],[aria-expanded="true"]) { background:var(--surface-hover); border-color:var(--fg); font-weight:600; }
+.hosted-workspace :is(button,a,input,select,textarea,summary):focus-visible { outline:2px solid var(--fg); outline-offset:3px; }
+.hosted-workspace button:disabled { opacity:.5; }
+@media (prefers-reduced-motion:reduce) { .hosted-workspace .career-control { transition:none; } }

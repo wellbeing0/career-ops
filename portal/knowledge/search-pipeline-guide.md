@@ -1,0 +1,8 @@
+# Search and pipeline guide
+The hosted free scanner reads configured public Greenhouse, Ashby and Lever boards. It does not run the broader search_queries web queries or every upstream CLI scanner. Bounds: 10 minutes, 100 boards, 250 saved matches. Source coverage shows successful, empty, unsupported and failed boards separately; an empty result is not proof no suitable jobs exist.
+
+Job filters edit portals.yml: positive/negative title keywords, location rules, content keywords and supported advanced filters. Strict eligibility, salary applicability, benefits and travel need human review when unknown. Remote wording alone does not establish US eligibility or one-week onsite arrangements. A new search uses current targeting; old runs retain their original results.
+
+Results are ranked by preliminary title fit, not a complete AI evaluation or verified suitability score. Deduplication suppresses previously known jobs. To diagnose zero new matches, inspect found/filtered/duplicate counts, source errors, configured filters and Existing opportunities. Use the supplied current snapshot, including its timestamp and truncation/availability warnings. Do not invent a precise exclusion reason when the snapshot lacks it.
+
+Adding selected jobs to Pipeline saves opportunities and does not apply. Pipeline also includes earlier search-history opportunities; Previously processed does not mean Applied. Applications holds evaluated/tracked application records. Search → Saved searches contains run history; Profile/CV recovery contains edit history. A saved job may be stale; opening its employer posting is needed to verify availability. No automatic employer contact or submission exists.
