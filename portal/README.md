@@ -75,3 +75,15 @@ Check HTTPS, then request `/`, each candidate directory and a representative ori
 ## Future interactive migration
 
 A separate OpenSpec change should qualify candidate-specific upstream web instances, canonical-script edits and backups first; then VPS model/CLI authentication, worker isolation, queue/cancellation and explicit spend caps. Remote browser application assistance is another qualification step and retains manual human submission. Current publication does not activate those capabilities or transfer provider credentials.
+
+## Deployment-coherent Assistant knowledge
+
+`portal/knowledge/` contains the reviewed product guides supplied to both career assistants. These explain the repository, hosted workflows and capabilities; they never establish candidate facts. Each turn adds a timestamped, bounded read-only snapshot of only the selected candidate’s filters, latest search coverage/counts, saved opportunities and application status counts. Snapshot limits and unavailable data are explicit. Native model tools remain denied.
+
+Package a release from a clean, committed checkout:
+
+```sh
+python3 portal/deploy/package-editor.py /absolute/staging/directory --release UNIQUE_RELEASE_ID
+```
+
+The package includes a knowledge manifest with the exact source commit, release ID and document hashes. Qualification and activation must verify it alongside source/build hashes. Copy guides with the code release, and roll them back with that release; do not independently pull GitHub main into the live assistant. Missing guides are identified as unavailable rather than represented as current project knowledge. Local development without a manifest is explicitly labeled as development.

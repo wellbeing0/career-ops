@@ -22,7 +22,7 @@ class Fake(http.server.BaseHTTPRequestHandler):
    self.wfile.write(b'data: [DONE]\n\n')
   except BrokenPipeError:pass
 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Fake);threading.Thread(target=server.serve_forever,daemon=True).start()
-def req(c,path,body=None,token=True,origin=None):
+def request_once(c,path,body=None,token=True,origin=None):
  headers={'X-Career-Gateway':'fictional-career-test'} if token else {}
  if body is not None:headers['Content-Type']='application/json'
  if origin:headers['Origin']=origin
@@ -30,6 +30,12 @@ def req(c,path,body=None,token=True,origin=None):
  try:
   with urllib.request.urlopen(request,timeout=10) as out:return out.status,json.loads(out.read())
  except urllib.error.HTTPError as e:return e.code,e.read().decode()
+def req(c,path,body=None,token=True,origin=None):
+ for attempt in range(20):
+  result=request_once(c,path,body,token,origin)
+  if body is not None or result[0]!=503:return result
+  time.sleep(.1)
+ return result
 try:
  for c in ['brad','steve']:
   with socket.socket() as sock:sock.bind(('127.0.0.1',0));ports[c]=sock.getsockname()[1]
@@ -64,8 +70,8 @@ await page.goto('http://127.0.0.1:'+ports.brad+'/brad/workspace?view=assistant')
 const nav=page.getByRole('button',{name:'Assistant',exact:true});assert.equal(await nav.getAttribute('aria-current'),'page');assert.equal(await nav.evaluate(el=>getComputedStyle(el).cursor),'pointer');assert.ok((await nav.boundingBox()).height>=44);await nav.hover();const rect=await nav.boundingBox();await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2);await page.mouse.down();assert.notEqual(await nav.evaluate(el=>getComputedStyle(el).boxShadow),'none');await page.mouse.up();
 const emptySend=page.getByRole('button',{name:'Send to assistant',exact:true});assert.equal(await emptySend.isDisabled(),true);assert.equal(await emptySend.evaluate(el=>getComputedStyle(el).cursor),'not-allowed');
 await page.route('**/api/hosted/documents',async route=>{await new Promise(r=>setTimeout(r,600));await route.continue();});await page.getByRole('button',{name:'Documents',exact:true}).click();await page.getByRole('button',{name:'Refresh documents',exact:true}).click();await page.getByRole('button',{name:'Refreshing documents…',exact:true}).waitFor();await page.getByRole('button',{name:'Refresh documents',exact:true}).waitFor();await page.unroute('**/api/hosted/documents');
-await page.getByRole('button',{name:'Profile',exact:true}).click();const profile=page.getByLabel('Full name',{exact:true});await profile.fill('Fictional Edited Name');await page.getByText('Unsaved profile changes',{exact:true}).waitFor();await page.getByRole('button',{name:'Profile',exact:true}).focus();await page.keyboard.press('Tab');assert.notEqual(await page.evaluate(()=>getComputedStyle(document.activeElement).outlineStyle),'none');
-await page.screenshot({path:'/tmp/career-ui-mobile.png',fullPage:true});await page.setViewportSize({width:1280,height:900});await page.emulateMedia({colorScheme:'light'});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));await page.emulateMedia({colorScheme:'dark'});await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Assistant',exact:true}).click();await page.getByRole('textbox',{name:'Message to career assistant'}).fill('Help me describe my experience.');await page.getByRole('button',{name:'Send to assistant'}).click();await page.getByText('Your approved primary CV is the source for accomplishments.',{exact:true}).waitFor();
+await page.getByRole('button',{name:'Profile',exact:true}).click();const profile=page.locator('label').filter({hasText:'Full name'}).locator('textarea');await profile.fill('Fictional Edited Name');await page.getByText('Unsaved profile changes',{exact:true}).waitFor();await page.getByRole('button',{name:'Profile',exact:true}).focus();await page.keyboard.press('Tab');assert.notEqual(await page.evaluate(()=>getComputedStyle(document.activeElement).outlineStyle),'none');
+await page.screenshot({path:'/tmp/career-ui-mobile.png',fullPage:true});await page.setViewportSize({width:1280,height:900});await page.emulateMedia({colorScheme:'light'});await page.waitForFunction(()=>!document.documentElement.classList.contains('dark'));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));await page.emulateMedia({colorScheme:'dark'});await page.waitForFunction(()=>document.documentElement.classList.contains('dark'));await page.screenshot({path:'/tmp/career-ui-desktop-dark.png',fullPage:true});await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Assistant',exact:true}).click();await page.getByRole('textbox',{name:'Message to career assistant'}).fill('Help me describe my experience.');await page.getByRole('button',{name:'Send to assistant'}).click();await page.getByText('Your approved primary CV is the source for accomplishments.',{exact:true}).waitFor();
 await page.getByRole('button',{name:'Save response',exact:true}).first().click();await page.getByText('Response saved to Documents.',{exact:true}).waitFor();
 const download=await page.getByRole('link',{name:'Download response',exact:true}).first().getAttribute('href');assert.ok(download);const exported=await page.request.get('http://127.0.0.1:'+ports.brad+download);assert.equal(exported.status(),200);assert.match(await exported.text(),/Your approved primary CV/);
 await page.reload();await page.getByRole('link',{name:'Download response',exact:true}).first().waitFor();
