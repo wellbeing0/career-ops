@@ -7,6 +7,7 @@ for(const name of ['lib','providers','plugins','templates'])fs.cpSync(path.join(
 for(const name of ['_shared.md','oferta.md','text.md','cover.md','email.md','interview/plan.md','interview/practice.md','interview/debrief.md']){const file=path.join(source,'modes',name);if(fs.existsSync(file)){fs.mkdirSync(path.dirname(path.join(code,'modes',name)),{recursive:true});fs.copyFileSync(file,path.join(code,'modes',name));}}
 fs.mkdirSync(path.join(code,'portal'));if(fs.existsSync(path.join(source,'portal/knowledge')))fs.cpSync(path.join(source,'portal/knowledge'),path.join(code,'portal/knowledge'),{recursive:true});fs.copyFileSync(path.join(source,'portal/search-worker.mjs'),path.join(code,'portal/search-worker.mjs'));
 fs.mkdirSync(path.join(code,'web/src/lib'),{recursive:true});for(const name of ['hosted','title-fit.mjs','profile-keywords.mjs'])fs.cpSync(path.join(source,'web/src/lib',name),path.join(code,'web/src/lib',name),{recursive:true});
+fs.copyFileSync(path.join(source,'web/package.json'),path.join(code,'web/package.json'));
 fs.symlinkSync(path.join(source,'node_modules'),path.join(code,'node_modules'));fs.symlinkSync(path.join(source,'web/node_modules'),path.join(code,'web/node_modules'));fs.copyFileSync(path.join(source,'tracker-aliases.json'),path.join(code,'tracker-aliases.json'));
 const provider=path.join(code,'providers/greenhouse.mjs');fs.renameSync(provider,path.join(code,'providers/_original-greenhouse.mjs'));
 fs.writeFileSync(provider,`import './_qualification-fixture.mjs';export {default} from './_original-greenhouse.mjs';`);

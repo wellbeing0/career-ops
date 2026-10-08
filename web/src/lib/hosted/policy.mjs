@@ -1,6 +1,6 @@
 // The hosted mode permits only its bounded editor; upstream worker surfaces fail closed.
 export function hostedAllowed(pathname, method) {
-  if (pathname === '/api/hosted/documents') return method === 'GET';
+  if (pathname === '/api/hosted/documents') return ['GET','POST'].includes(method);
   if (pathname === '/api/hosted' || pathname === '/api/hosted/search' || pathname === '/api/hosted/assistant') return ['GET','POST'].includes(method);
   return ['GET','HEAD'].includes(method) && (pathname === '/' || pathname.startsWith('/_next/static/'));
 }

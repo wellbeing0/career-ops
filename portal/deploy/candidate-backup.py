@@ -10,7 +10,7 @@ except FileExistsError:raise SystemExit('Candidate busy; backup refused rather t
 os.write(fd,json.dumps({'pid':os.getpid()}).encode());os.close(fd)
 import atexit
 atexit.register(lambda:lock.unlink(missing_ok=True))
-if (a.root/'.hosted/pending.json').exists():raise SystemExit('Interrupted save requires recovery before backup')
+if (a.root/'.hosted/pending.json').exists() or (a.root/'.hosted/evaluations/pending.json').exists():raise SystemExit('Interrupted save requires recovery before backup')
 for receipt in (a.root/'.hosted/search').glob('*/publication.json'):
  if json.loads(receipt.read_text()).get('status')=='pending':raise SystemExit('Interrupted search publication requires reconciliation before backup')
 a.destination.mkdir(parents=True,exist_ok=True,mode=0o700)

@@ -91,3 +91,9 @@ The package includes a knowledge manifest with the exact source commit, release 
 ### Hosted capability review and guided workflow increment
 
 See [repository-to-website review](../docs/hosted-capability-review.md) for what is exposed, what is missing and why some CLI workflows should remain owner-only. The `complete-hosted-job-workflow` OpenSpec implements the first guided document increment: selected-job evaluation, Markdown application packets, and interview plan/practice/debrief with saved review artifacts. Canonical evaluation-to-tracker registration, PDF/ATS export and independent research remain follow-on work.
+
+### Reviewed evaluations and application PDF export
+
+The `record-evaluations-and-export-applications` OpenSpec increment adds Documents actions: **Record reviewed evaluation** → review company/role/URL/optional score → **Save as Evaluated**; and **Review and export PDF** → choose content/job evaluation → **Run quality review** → review exact text/findings → acknowledge → **Save PDF and check notes**. Resume-only export requires one Resume heading. Checks are diagnostic, not fact verification or an ATS guarantee. No application is submitted and no automatic Applied transition exists. PDF/check artifacts appear in the live library; original reviews and master CV remain.
+
+Owner activation helper: `portal/deploy/activate-application-export.py` (qualified release only; `--rollback` restores prior service/env definitions). Automatic backups refuse interrupted registration journals until recovery. These capabilities are staged until owner activation and subsequent live verification.
